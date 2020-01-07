@@ -5,10 +5,25 @@
 html {
   font-size: 16px;
   box-sizing: border-box;
+  background-color: $brand_main_color;
 }
 
 button {
+  border: none;
+  height: 20vh;
+  width: 30vw;
   padding: 1rem;
   border-radius: 1rem;
-  box-shadow: 1px 1px 5px #272525;
+  box-shadow: 4px 4px 2px 0 $brand_shadow_color;
+  color: $brand_white;
+  background-color: $brand_highlight_color;
+  &:focus,
+  &:hover {
+    background-color: darken($brand_highlight_color, 25);
+    outline: none;
+  }
+
+  &:active {
+    background-color: $brand_secondary_color;
+  }
 }
