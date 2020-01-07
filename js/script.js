@@ -1,26 +1,31 @@
-// const quizOne = document.querySelector('.quiz-one');
-// const quizTwo = document.querySelector('.quiz-two');
+const quizOne = document.querySelector('.quiz-one');
+const quizTwo = document.querySelector('.quiz-two');
 
-// quizOne.addEventListener(
-//   'click',
-//   (quizOneInitiate = e => {
-//     e.preventDefault();
-//     console.log('quiz one start');
-//   })
-// );
+const json = quiz =>
+  fetch('./src/quiz.json')
+    .then(function(resp) {
+      return resp.json();
+    })
+    .then(function(data) {
+      console.log(data.quizzes[quiz]);
+    });
 
-// quizTwo.addEventListener(
-//   'click',
-//   (quizTwoInitiate = e => {
-//     e.preventDefault();
-//     console.log('quiz two start');
-//   })
-// );
+const quizOneInitiate = () => {
+  console.log('quiz one start');
+  json(0);
+};
 
-fetch('./src/quiz.json')
-  .then(function(resp) {
-    return resp.json();
-  })
-  .then(function(data) {
-    console.log(data);
-  });
+const quizTwoInitiate = () => {
+  console.log('quiz two start');
+  json(1);
+};
+
+quizOne.addEventListener('click', e => {
+  e.preventDefault();
+  quizOneInitiate();
+});
+
+quizTwo.addEventListener('click', e => {
+  e.preventDefault();
+  quizTwoInitiate();
+});
