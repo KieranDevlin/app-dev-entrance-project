@@ -31,7 +31,7 @@ button {
     transform: scale(1.0675, 1.0657);
   }
 
-  @include media($mobile) {
+  @include media($desktop) {
     width: 40vw;
     height: 20vh;
   }

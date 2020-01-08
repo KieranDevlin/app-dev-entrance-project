@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
   //////////////////  VARIABLES ////////////////////////
   //////////////////////////////////////////////////////
 
+  const gif = document.querySelector('.loading-gif');
+  const gifContainer = document.querySelector('.loading-gif-container');
   const title = document.querySelector('.quiz-title');
   const quizQuestions = document.querySelector('.quiz-questions');
   const scoreContainer = document.querySelector('.score');
@@ -88,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //removes quiz selector
     let ar = q.questions;
     quizQuestions.innerHTML = '';
+
     if (iterator < ar.length) {
       let answers = ar[iterator].answers;
       // appends question in json file
@@ -100,38 +103,60 @@ document.addEventListener('DOMContentLoaded', function() {
 
       //selects all the buttons and adds event listener to all
       document.querySelectorAll('button').forEach(el => {
-        el.addEventListener('click', () => {
-          let submitAnswer = el.classList.value.slice(
-            el.classList.value.length - 1,
-            el.classList.value.length
-          );
+        el.addEventListener(
+          'click',
+          () => {
+            let submitAnswer = el.classList.value.slice(
+              el.classList.value.length - 1,
+              el.classList.value.length
+            );
 
-          // checks if current answer is the correct answer
-          if (answers[submitAnswer].value === true) {
-            el.style.backgroundColor = 'green';
-            score++;
-            iterator++;
-            scoreCounter.innerHTML = score;
-            setTimeout(() => {
-              appendQuestions(q, quiz, iterator);
-            }, 2000);
-          } else {
-            el.style.backgroundColor = 'red';
-            iterator++;
-            scoreCounter.innerHTML = score;
-            setTimeout(() => {
-              appendQuestions(q, quiz, iterator);
-            }, 2000);
-          }
-        });
+            // checks if current answer is the correct answer
+            if (answers[submitAnswer].value === true) {
+              el.style.backgroundColor = 'green';
+              score++;
+              let newIterator = iterator + 1;
+              scoreCounter.innerHTML = score;
+              setTimeout(() => {
+                gif.classList.remove('active');
+                gifContainer.classList.remove('active');
+                appendQuestions(q, quiz, newIterator);
+              }, 2000);
+              gif.classList.add('active');
+              gifContainer.classList.add('active');
+              // document.querySelectorAll('button').forEach(el => {
+              //   window.stopPropagation();
+              // });
+            } else {
+              el.style.backgroundColor = 'red';
+              let newIterator = iterator + 1;
+              scoreCounter.innerHTML = score;
+              setTimeout(() => {
+                gifContainer.classList.remove('loading');
+                appendQuestions(q, quiz, newIterator);
+              }, 2000);
+              gifContainer.classList.add('loading');
+            }
+          },
+          { once: true }
+        );
       });
     } else {
       scoreContainer.classList.remove('active');
-      title.innerHTML =
-        'Your Score: ' +
-        ((score / ar.length) * 100).toFixed(1) +
-        '%' +
-        '<br>Do you want to play again?';
+      let scorePercent = ((score / ar.length) * 100).toFixed(1);
+      if (scorePercent > 50) {
+        title.innerHTML =
+          'Your Score: ' +
+          scorePercent +
+          '%' +
+          '<br><span style="color:green">PASS</span><br>Do you want to play again?';
+      } else {
+        title.innerHTML =
+          'Your Score: ' +
+          scorePercent +
+          '%' +
+          '<br><span style="color:red">FAIL</span><br>Do you want to play again?';
+      }
       newButton('YES', 'play-again');
       newButton('NO', 'no-more');
       newGameInitiate();
