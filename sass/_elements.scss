@@ -11,7 +11,7 @@ html {
 button {
   border: none;
   width: 75vw;
-  height: 20vh;
+  height: 11vh;
   padding: 1rem;
   border-radius: 1rem;
   box-shadow: 4px 4px 2px 0 $brand_shadow_color;
@@ -33,5 +33,6 @@ button {
 
   @include media($mobile) {
     width: 40vw;
+    height: 20vh;
   }
 }
