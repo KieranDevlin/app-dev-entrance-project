@@ -24,13 +24,7 @@ const appendQuestions = (q, quiz, iterator = 0) => {
   quizQuestions.innerHTML = '';
   let ar = q.questions;
   let answers = ar[quiz].answers;
-  // let i = 0;
 
-  // const jsonLoop = (ar, callback) => {
-
-  //   loop();
-
-  //   function loop() {
   if (iterator < ar.length) {
     // appends question in json file
     title.innerHTML = ar[iterator].question;
@@ -60,17 +54,25 @@ const appendQuestions = (q, quiz, iterator = 0) => {
           iterator++;
           scoreCounter.innerHTML = score;
           appendQuestions(q, quiz, iterator);
+        } else {
+          iterator++;
+          scoreCounter.innerHTML = score;
+          appendQuestions(q, quiz, iterator);
         }
       });
     });
   } else {
+    scoreContainer.classList.remove('active');
+    title.innerHTML =
+      'Your Score: ' +
+      score +
+      ' &frasl; ' +
+      ar.length +
+      '<br>' +
+      ((score / ar.length) * 100).toFixed(1) +
+      '%';
     console.log('broken');
-    // callback();
   }
-  //   }
-  // };
-
-  // jsonLoop(ar);
 };
 
 // grabs only quiz 1 of JSON file
