@@ -10,13 +10,14 @@ html {
 
 button {
   border: none;
+  width: 75vw;
   height: 20vh;
-  width: 30vw;
   padding: 1rem;
   border-radius: 1rem;
   box-shadow: 4px 4px 2px 0 $brand_shadow_color;
   color: $brand_white;
   background-color: $brand_highlight_color;
+
   &:focus,
   &:hover {
     background-color: darken($brand_highlight_color, 25);
@@ -25,5 +26,9 @@ button {
 
   &:active {
     background-color: $brand_secondary_color;
+  }
+
+  @include media($mobile) {
+    width: 40vw;
   }
 }

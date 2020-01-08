@@ -1,17 +1,41 @@
 .quiz-container {
-  height: 100vh;
+  padding: 0 2rem;
+  margin-top: 12vh;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
 }
 
-.quiz-title {
-  font-size: 6rem;
+.score {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  font-size: 2rem;
+  display: none;
 }
 
-.quiz-start {
+.quiz-title {
+  text-align: center;
+  margin: 2rem 0;
+  @include media($mobile) {
+    font-size: 4rem;
+  }
+}
+
+.quiz-questions {
+  margin: 2rem 0;
+  text-align: center;
   display: grid;
-  grid-template-rows: 2;
+  grid-template-rows: repeat(2, 2fr);
+  grid-template-columns: 2fr;
   grid-gap: 2rem;
+
+  @include media($mobile) {
+    grid-template-columns: repeat(2, 2fr);
+  }
+}
+
+.active {
+  display: block;
 }
