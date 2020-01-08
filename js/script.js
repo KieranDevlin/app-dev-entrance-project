@@ -1,20 +1,14 @@
 // wait for the DOM to populate
 document.addEventListener('DOMContentLoaded', function() {
-  //////////////////////////////////////////////////////
-  //////////////////  VARIABLES ////////////////////////
-  //////////////////////////////////////////////////////
-
-  const gif = document.querySelector('.loading-gif');
+  //DOM variables
   const gifContainer = document.querySelector('.loading-gif-container');
   const title = document.querySelector('.quiz-title');
   const quizQuestions = document.querySelector('.quiz-questions');
   const scoreContainer = document.querySelector('.score');
   let scoreCounter = document.querySelector('.user-score');
-  let score = 0;
 
-  //////////////////////////////////////////////////////
-  //////////////////  FUNCTIONS ////////////////////////
-  //////////////////////////////////////////////////////
+  //score count
+  let score = 0;
 
   // access local file to circumvent CORS policy using fetch api
   const json = quiz =>
@@ -39,15 +33,14 @@ document.addEventListener('DOMContentLoaded', function() {
     startQuiz();
   };
 
-  // starts a quiz
+  // initiates a quiz and call JSON data
   const quizInitiate = quiz => {
     scoreContainer.classList.toggle('active');
     scoreCounter.innerHTML = score;
     json(quiz);
   };
 
-  // waits for user to select a quiz
-
+  // waits for user to select a quiz and opens the selected quiz
   const startQuiz = () => {
     document.querySelectorAll('button').forEach(el => {
       el.addEventListener('click', e => {
@@ -87,13 +80,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // appends questions and answers to DOM and keeps track of score
   const appendQuestions = (q, quiz, iterator = 0) => {
-    //removes quiz selector
-    let ar = q.questions;
+    //removes any quiz buttons
     quizQuestions.innerHTML = '';
+    let ar = q.questions;
 
+    // checks what question user is on and if there are any more
     if (iterator < ar.length) {
       let answers = ar[iterator].answers;
-      // appends question in json file
+      // appends current question in json file
       title.innerHTML = ar[iterator].question;
 
       // appends possible answers to current question in json file
@@ -106,28 +100,28 @@ document.addEventListener('DOMContentLoaded', function() {
         el.addEventListener(
           'click',
           () => {
+            // slices last character in class name, a number, to use as an index
             let submitAnswer = el.classList.value.slice(
               el.classList.value.length - 1,
               el.classList.value.length
             );
 
-            // checks if current answer is the correct answer
+            // checks if current answer is the correct answer based on JSON value
             if (answers[submitAnswer].value === true) {
+              // if answer is correct adds to score
               el.style.backgroundColor = 'green';
               score++;
               let newIterator = iterator + 1;
               scoreCounter.innerHTML = score;
+
+              // waits 2 seconds for new question to append
               setTimeout(() => {
-                gif.classList.remove('active');
-                gifContainer.classList.remove('active');
+                gifContainer.classList.remove('loading');
                 appendQuestions(q, quiz, newIterator);
               }, 2000);
-              gif.classList.add('active');
-              gifContainer.classList.add('active');
-              // document.querySelectorAll('button').forEach(el => {
-              //   window.stopPropagation();
-              // });
+              gifContainer.classList.add('loading');
             } else {
+              // if answer is incorrect doesn't add to score and appends new question
               el.style.backgroundColor = 'red';
               let newIterator = iterator + 1;
               scoreCounter.innerHTML = score;
@@ -138,10 +132,12 @@ document.addEventListener('DOMContentLoaded', function() {
               gifContainer.classList.add('loading');
             }
           },
+          // only lets user select an answer once
           { once: true }
         );
       });
     } else {
+      // game is over and calculates score
       scoreContainer.classList.remove('active');
       let scorePercent = ((score / ar.length) * 100).toFixed(1);
       if (scorePercent > 50) {
@@ -157,11 +153,13 @@ document.addEventListener('DOMContentLoaded', function() {
           '%' +
           '<br><span style="color:red">FAIL</span><br>Do you want to play again?';
       }
+      // lets user play again and appends quiz 1 and 2 if YES is selected
       newButton('YES', 'play-again');
       newButton('NO', 'no-more');
       newGameInitiate();
     }
   };
 
+  // waits for users first interaction with quiz selectors
   startQuiz();
 });
