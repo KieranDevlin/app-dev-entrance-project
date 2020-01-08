@@ -117,29 +117,21 @@ const appendQuestions = (q, quiz, iterator = 0) => {
   }
 };
 
-// grabs only quiz 1 of JSON file
-const quizOneInitiate = quiz => {
-  quiz = 0;
-  scoreContainer.classList.add('active');
-  scoreCounter.innerHTML = score;
-  json(quiz);
-};
-
-// grabs only quiz 2 of JSON file
-const quizTwoInitiate = quiz => {
-  quiz = 1;
+// starts a quiz
+const quizInitiate = quiz => {
   scoreContainer.classList.toggle('active');
   scoreCounter.innerHTML = score;
   json(quiz);
 };
 
+// waits for user to select a quiz
 quizSelector.forEach(el => {
   el.addEventListener('click', e => {
     e.preventDefault();
     if (el.classList.contains('quiz-one')) {
-      quizOneInitiate();
+      quizInitiate(0);
     } else {
-      quizTwoInitiate();
+      quizInitiate(1);
     }
   });
 });
