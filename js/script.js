@@ -2,14 +2,10 @@
 //////////////////  VARIABLES ////////////////////////
 //////////////////////////////////////////////////////
 
-const quizSelector = document.querySelectorAll('button');
-const quizOne = document.querySelector('.quiz-one');
-const quizTwo = document.querySelector('.quiz-two');
 const title = document.querySelector('.quiz-title');
 const quizQuestions = document.querySelector('.quiz-questions');
 const scoreContainer = document.querySelector('.score');
 let scoreCounter = document.querySelector('.user-score');
-let quiz = 0;
 let score = 0;
 
 //////////////////////////////////////////////////////
@@ -35,6 +31,29 @@ const newGame = () => {
   quizQuestions.innerHTML = '';
   newButton('Quiz 1', 'quiz-one');
   newButton('Quiz 2', 'quiz-two');
+  startQuiz();
+};
+
+// starts a quiz
+const quizInitiate = quiz => {
+  scoreContainer.classList.toggle('active');
+  scoreCounter.innerHTML = score;
+  json(quiz);
+};
+
+// waits for user to select a quiz
+
+const startQuiz = () => {
+  document.querySelectorAll('button').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      if (el.classList.contains('quiz-one')) {
+        quizInitiate(0);
+      } else {
+        quizInitiate(1);
+      }
+    });
+  });
 };
 
 // appends a new button with specific text and class name
@@ -117,21 +136,4 @@ const appendQuestions = (q, quiz, iterator = 0) => {
   }
 };
 
-// starts a quiz
-const quizInitiate = quiz => {
-  scoreContainer.classList.toggle('active');
-  scoreCounter.innerHTML = score;
-  json(quiz);
-};
-
-// waits for user to select a quiz
-quizSelector.forEach(el => {
-  el.addEventListener('click', e => {
-    e.preventDefault();
-    if (el.classList.contains('quiz-one')) {
-      quizInitiate(0);
-    } else {
-      quizInitiate(1);
-    }
-  });
-});
+startQuiz();
