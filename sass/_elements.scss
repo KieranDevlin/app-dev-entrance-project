@@ -17,15 +17,18 @@ button {
   box-shadow: 4px 4px 2px 0 $brand_shadow_color;
   color: $brand_white;
   background-color: $brand_highlight_color;
+  overflow: hidden;
 
   &:focus,
   &:hover {
     background-color: darken($brand_highlight_color, 25);
     outline: none;
+    transform: scale(1.0675, 1.0657);
   }
 
   &:active {
     background-color: $brand_secondary_color;
+    transform: scale(1.0675, 1.0657);
   }
 
   @include media($mobile) {

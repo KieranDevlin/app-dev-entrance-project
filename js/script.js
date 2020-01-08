@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const newGame = () => {
     title.innerHTML = 'START';
     quizQuestions.innerHTML = '';
+    score = 0;
     newButton('Quiz 1', 'quiz-one');
     newButton('Quiz 2', 'quiz-two');
     startQuiz();
@@ -61,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // appends a new button with specific text and class name
   const newButton = (text, buttonClass) => {
     const b = document.createElement('button');
-    const a = document.createElement('h3');
+    const a = document.createElement('h4');
     quizQuestions.appendChild(b);
     b.appendChild(a);
     a.innerHTML = text;
@@ -94,12 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // appends possible answers to current question in json file
       for (let i = 0; i < answers.length; i++) {
-        const b = document.createElement('button');
-        const a = document.createElement('h3');
-        quizQuestions.appendChild(b);
-        b.appendChild(a);
-        a.innerHTML = answers[i].content;
-        b.classList.add('number:' + i);
+        newButton(answers[i].content, 'number:' + i);
       }
 
       //selects all the buttons and adds event listener to all
@@ -112,6 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
           // checks if current answer is the correct answer
           if (answers[submitAnswer].value === true) {
+            el.style.backgroundColor = 'green';
             score++;
             iterator++;
             scoreCounter.innerHTML = score;
@@ -119,6 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
               appendQuestions(q, quiz, iterator);
             }, 2000);
           } else {
+            el.style.backgroundColor = 'red';
             iterator++;
             scoreCounter.innerHTML = score;
             setTimeout(() => {
