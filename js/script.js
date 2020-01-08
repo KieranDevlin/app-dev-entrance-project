@@ -1,3 +1,8 @@
+//////////////////////////////////////////////////////
+//////////////////  VARIABLES ////////////////////////
+//////////////////////////////////////////////////////
+
+const quizSelector = document.querySelectorAll('button');
 const quizOne = document.querySelector('.quiz-one');
 const quizTwo = document.querySelector('.quiz-two');
 const title = document.querySelector('.quiz-title');
@@ -7,6 +12,11 @@ let scoreCounter = document.querySelector('.user-score');
 let quiz = 0;
 let score = 0;
 
+//////////////////////////////////////////////////////
+//////////////////  FUNCTIONS ////////////////////////
+//////////////////////////////////////////////////////
+
+// access local file to circumvent CORS policy using fetch api
 const json = quiz =>
   fetch('./src/quiz.json')
     .then(function(resp) {
@@ -19,6 +29,39 @@ const json = quiz =>
       appendQuestions(currentQuizData, quiz);
     });
 
+// initiates a new game
+const newGame = () => {
+  title.innerHTML = 'START';
+  quizQuestions.innerHTML = '';
+  newButton('Quiz 1', 'quiz-one');
+  newButton('Quiz 2', 'quiz-two');
+};
+
+// appends a new button with specific text and class name
+const newButton = (text, buttonClass) => {
+  const b = document.createElement('button');
+  const a = document.createElement('h3');
+  quizQuestions.appendChild(b);
+  b.appendChild(a);
+  a.innerHTML = text;
+  b.classList.add(buttonClass);
+};
+
+// checks if user wants to play again or not
+const newGameInitiate = () => {
+  document.querySelectorAll('button').forEach(el => {
+    el.addEventListener('click', () => {
+      if (el.classList.contains('play-again')) {
+        newGame();
+      } else {
+        title.innerHTML = 'Thanks for playing!';
+        quizQuestions.innerHTML = '';
+      }
+    });
+  });
+};
+
+// appends questions and answers to DOM and keeps track of score
 const appendQuestions = (q, quiz, iterator = 0) => {
   //removes quiz selector
   quizQuestions.innerHTML = '';
@@ -65,13 +108,12 @@ const appendQuestions = (q, quiz, iterator = 0) => {
     scoreContainer.classList.remove('active');
     title.innerHTML =
       'Your Score: ' +
-      score +
-      ' &frasl; ' +
-      ar.length +
-      '<br>' +
       ((score / ar.length) * 100).toFixed(1) +
-      '%';
-    console.log('broken');
+      '%' +
+      '<br>Do you want to play again?';
+    newButton('YES', 'play-again');
+    newButton('NO', 'no-more');
+    newGameInitiate();
   }
 };
 
@@ -91,28 +133,13 @@ const quizTwoInitiate = quiz => {
   json(quiz);
 };
 
-quizOne.addEventListener('click', e => {
-  e.preventDefault();
-  quizOneInitiate();
+quizSelector.forEach(el => {
+  el.addEventListener('click', e => {
+    e.preventDefault();
+    if (el.classList.contains('quiz-one')) {
+      quizOneInitiate();
+    } else {
+      quizTwoInitiate();
+    }
+  });
 });
-
-quizTwo.addEventListener('click', e => {
-  e.preventDefault();
-  quizTwoInitiate();
-});
-
-////////////////////////////////////////////////////////////////////
-// THIS LOOP IS INFINITE DONT USE
-////////////////////////////////////////////////////////////////////
-
-//loops through questions and answers and appends to DOM
-// for (let i = 0; i < currentQuiz.questions.length; i++) {
-//   title.innerHTML = currentQuiz.questions[i].question;
-//   currentQuiz.questions[quiz].answers.forEach(e => {
-//     const b = document.createElement('button');
-//     const a = document.createElement('h3');
-//     quizQuestions.appendChild(b);
-//     b.appendChild(a);
-//     a.innerHTML = e.content;
-//   });
-// }
