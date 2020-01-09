@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   //score count
   let score = 0;
 
-  // access local file to circumvent CORS policy using fetch api
+  // STEP 4: access local file to circumvent CORS policy using fetch api
   const json = quiz =>
     fetch('./src/quiz.json')
       .then(function(resp) {
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         appendQuestions(currentQuizData, quiz);
       });
 
-  // initiates a new quiz
+  // STEP 7:  initiates a new quiz - END OF GAME LOOP
   const newGame = () => {
     title.innerHTML = 'START';
     quizQuestions.innerHTML = '';
@@ -33,14 +33,14 @@ document.addEventListener('DOMContentLoaded', function() {
     startQuiz();
   };
 
-  // initiates a quiz and call JSON data
+  // STEP 3: initiates a quiz and call JSON data
   const quizInitiate = quiz => {
     scoreContainer.classList.toggle('active');
     scoreCounter.innerHTML = score;
     json(quiz);
   };
 
-  // waits for user to select a quiz and opens the selected quiz
+  // STEP 2: waits for user to select a quiz and opens the selected quiz
   const startQuiz = () => {
     document.querySelectorAll('button').forEach(el => {
       el.addEventListener('click', e => {
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     b.classList.add(buttonClass);
   };
 
-  // checks if user wants to play again or not
+  // STEP 6: checks if user wants to play again or not
   const newGameInitiate = () => {
     document.querySelectorAll('button').forEach(el => {
       el.addEventListener('click', () => {
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   };
 
-  // appends questions and answers to DOM and keeps track of score
+  // STEP 5: appends questions and answers to DOM and keeps track of score
   const appendQuestions = (q, quiz, iterator = 0) => {
     //removes any quiz buttons
     quizQuestions.innerHTML = '';
@@ -160,6 +160,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 
-  // waits for users first interaction with quiz selectors
+  // STEP 1: waits for users first interaction with quiz selectors
   startQuiz();
 });
